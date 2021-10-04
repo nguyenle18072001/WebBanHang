@@ -19,6 +19,12 @@ class Cart extends Model
 	}
 
 	public function add($item, $id){
+       $price = 0;
+       if($item->promotion_price!=0){
+              $price = $item->promotion_price;
+       }else{
+              $price = $item->unit_price;
+       }
 		$giohang = ['qty'=>0, 'price' => $item->unit_price, 'item' => $item];
 		if($this->items){
 			if(array_key_exists($id, $this->items)){
@@ -29,7 +35,7 @@ class Cart extends Model
 		$giohang['price'] = $item->unit_price * $giohang['qty'];
 		$this->items[$id] = $giohang;
 		$this->totalQty++;
-		$this->totalPrice += $item->unit_price;
+		$this->totalPrice += $item->price;
 	}
 	//xóa 1
 	public function reduceByOne($id){
